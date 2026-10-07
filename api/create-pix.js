@@ -15,14 +15,14 @@ export default async function handler(req, res) {
   const { name, cpf, amount, description, externalRef } = readJsonBody(req);
   const cleanCpf = String(cpf || '').replace(/\D/g, '');
   const numericAmount = Number(amount);
-
   if (!name || cleanCpf.length !== 11 || !Number.isFinite(numericAmount) || numericAmount < 1 || !externalRef) {
     return res.status(400).json({ error: 'Dados inválidos para gerar o PIX.' });
   }
 
-  const clientId = process.env.KALANGOPAY_CLIENT_ID;
-  const clientSecret = process.env.KALANGOPAY_CLIENT_SECRET;
-  const webhookUrl = process.env.KALANGOPAY_WEBHOOK_URL;
+  const clientId = process.env.KALANGO_CLIENT_ID || process.env.KALANGOPAY_CLIENT_ID;
+  const clientSecret = process.env.KALANGO_SECRET_KEY || process.env.KALANGOPAY_CLIENT_SECRET;
+  const host = String(req.headers['x-forwarded-host'] || req.headers.host || '').split(',')[0].trim();
+  const webhookUrl = process.env.KALANGOPAY_WEBHOOK_URL || (host ? `https://${host}/api/webhooks/kalangopay` : '');
   if (!clientId || !clientSecret || !webhookUrl) {
     return res.status(503).json({ error: 'Pagamento PIX ainda não foi configurado.' });
   }
@@ -41,7 +41,7 @@ export default async function handler(req, res) {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         Authorization: `Bearer ${clientId}.${clientSecret}`,
-        'Idempotency-Key': `bbq-${externalRef}`,
+        'Idempotency-Key': `acai-${externalRef}`,
       },
       body: form,
     });
@@ -49,11 +49,7 @@ export default async function handler(req, res) {
     if (!response.ok || !data.qrcode || !data.transactionId) {
       return res.status(502).json({ error: 'Não foi possível gerar o PIX.', details: data });
     }
-    return res.status(200).json({
-      qrcode: data.qrcode,
-      transactionId: data.transactionId,
-      amount: data.amount ?? numericAmount,
-    });
+    return res.status(200).json({ qrcode: data.qrcode, transactionId: data.transactionId, amount: data.amount ?? numericAmount });
   } catch {
     return res.status(502).json({ error: 'Falha ao comunicar com o gateway de pagamento.' });
   }
