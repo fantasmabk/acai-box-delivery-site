@@ -314,3 +314,5 @@ h1{letter-spacing:-1px!important}.location-pill-modern{display:inline-flex;align
 
 <style id="remove-mobile-bottom-nav">@media(max-width:767px){nav.fixed.bottom-0,nav[class*="bottom-0"]{display:none!important}}</style><script id="remove-mobile-bottom-nav-script">window.addEventListener("DOMContentLoaded",function(){Array.from(document.querySelectorAll("nav,div")).forEach(function(el){var t=(el.innerText||"").trim();if(/Início[\s\S]*Sacola[\s\S]*Pedidos[\s\S]*Conta/.test(t)&&el.querySelectorAll("a,button").length>=4){var r=el.getBoundingClientRect();if(r.top>window.innerHeight*.45)el.style.setProperty("display","none","important")}})})</script>
 <script>new MutationObserver(()=>document.querySelectorAll("#custom-add").forEach(b=>b.id="custom-add-basket")).observe(document,{childList:true,subtree:true})</script>
+
+<script id="pote-card-images-correct">window.addEventListener("load",function(){setTimeout(function(){document.querySelectorAll("#pote .group img,#pote-zero .group img").forEach(function(img){img.src="images/acai-1l-estudio.png";});},4200);},{once:true});</script>
