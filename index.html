@@ -316,3 +316,6 @@ h1{letter-spacing:-1px!important}.location-pill-modern{display:inline-flex;align
 <script>new MutationObserver(()=>document.querySelectorAll("#custom-add").forEach(b=>b.id="custom-add-basket")).observe(document,{childList:true,subtree:true})</script>
 
 <script id="pote-card-images-correct">window.addEventListener("load",function(){setTimeout(function(){document.querySelectorAll("#pote .group img,#pote-zero .group img").forEach(function(img){img.src="images/acai-1l-estudio.png";});},4200);},{once:true});</script>
+
+
+<script id="correct-pot-card-images">window.addEventListener("load",function(){window.setTimeout(function(){var normal=["images/acai-1l-estudio.png","images/pote-15l-estudio.png","images/pote-2l-estudio.png"],zero=["images/pote-zero-1l-estudio.png","images/pote-zero-15l-estudio.png","images/pote-zero-2l-estudio.png"];document.querySelectorAll("#pote .group img").forEach(function(img,i){img.src=normal[i];});document.querySelectorAll("#pote-zero .group img").forEach(function(img,i){img.src=zero[i];});},4500);},{once:true});</script>
